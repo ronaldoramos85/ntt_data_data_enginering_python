@@ -1,3 +1,4 @@
+from datetime import datetime
 # Menu informativo sobre as opcoes validas
 menu = """
 
@@ -13,11 +14,14 @@ saldo = 0
 limite = 500
 extrato = ""
 numero_saques = 0
-LIMITE_SAQUES = 3
+LIMITE_SAQUES = 10
+mascara_ptbr = "%d/%m/%Y %H:%M"
 # Finalizacao de variaveis
 
 # Inicio do laco principal de execucao do programa
 while True:
+    
+    data_hora_operacao = datetime.now().strftime(mascara_ptbr)
 
     # Le a opcao
     opcao = input(menu)
@@ -38,7 +42,7 @@ while True:
                 saldo += valor
                 
                 # Concatena a operacao de deposito efetuada ao extrato
-                extrato += f"(+) Depósito: R$ {valor:.2f}\n"
+                extrato += f"(+) Depósito: R$ {valor:.2f} às {data_hora_operacao}\n"
 
             # Se o valor de opcao digitado eh invalido retorna uma mensagem de erro
             else:
@@ -75,7 +79,7 @@ while True:
             # Se o valor do saque for positivo o valor eh debitado do saldo e uma linha relativa ah operacao eh adicionada ao extrato
             elif valor > 0:
                 saldo -= valor
-                extrato += f"(-) Saque: R$ {valor:.2f}\n"
+                extrato += f"(-) Saque: R$ {valor:.2f} às {data_hora_operacao}\n"
                 # Eh adicionado um saque ao numero de saques para controle do limite de vezes desta operacao
                 numero_saques += 1
 
@@ -86,11 +90,10 @@ while True:
         
         # Inicio do extrato
         elif opcao == "e":
-            
             # Exibe as operacoes acumuladas ate o momento no extrato caso exista alguma. Caso nao exista qualquer operacao, eh exibida uma mensagem informando que nenhuma movimentacao foi realizada
             print("\n================ EXTRATO ================")
             print("Não foram realizadas movimentações." if not extrato else extrato)
-            print(f"\nSaldo: R$ {saldo:.2f}")
+            print(f"\nSaldo: R$ {saldo:.2f}  às {data_hora_operacao}")
             print("==========================================")
         # Fim do extrato
         
